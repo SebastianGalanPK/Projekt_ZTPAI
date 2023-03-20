@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeme.com - Daily dose of memes</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/2282473dfd.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="/public/js/search.js" defer></script>
+    <script type="text/javascript" src="/public/js/memeManager.js" defer></script>
+    <script type="text/javascript" src="/public/js/communityManager.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <div id="post-a-new-meme-container">
+        <div class="container">
+            <span id="PANM-header">Post a new meme!</span>
+            <span class="form-info"> Error message #5151 </span>
+            <form action="addNewMeme" method="POST" ENCTYPE="multipart/form-data">
+                <label for="PANM-community">Select community:  </label>
+                <select name="id_community" id="PANM-community" style="width:200px;">
+                    <option value="0">Home</option>
+                    
+                    <!-- #1234 Pobieranie listy społecznościu użytkownika -->
+                    <!-- <option value="ID Społeczności">Nazwa Społeczności</option> -->
+                </select>
+
+                <input name="text" id="PANM-text" type="text" placeholder="Text (optional)">
+                <div id="PANM-wrapper">
+                    <input id="upload" type="file" name="file">
+                    <label for="upload">Upload</label>
+                </div>
+
+                <div id="PANM-buttons">
+                    <button id="BCancel" type="button" onclick="togglePostANewMeme()">CANCEL</button>
+                    <button id="BPost">POST</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="create-a-new-community-container">
+        <div class="container">
+            <div class="header">Create a new community</div>
+
+            <form action="addNewCommunity" method="POST" ENCTYPE="multipart/form-data">
+                <label for="Comm-name">Name:  </label><br>
+                <input name="comm-name" id="comm-name" type="text" placeholder="Name"><br><br>
+                <label for="Comm-shortname">Shortname:  </label><br>
+                <input name="comm-shortname" id="comm-shortname" type="text" placeholder="Short name">
+
+                <div class="comm-buttons">
+                    <button id="BCancel" type="button" onclick="toggleCreateANewCommunity()">CANCEL</button>
+                    <button id="BPost">CREATE</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="bg-button" onmouseenter="toggleSearchResult()">
+
+    </div>
+
+    <div id="panel-left">
+        <div class="panel-left-left">
+            <a href="/index.php"><img src="/img/logo150x29.png"></a>
+        </div>
+        <div class="panel-left-right">
+            <input id="community-search" type="text" placeholder="Search" onclick="toggleSearchResult()">
+
+            <div id="search-result">
+                <div id="search-result-content">
+
+                </div>
+                <div id="create-a-new-community" onclick="toggleCreateANewCommunity()">
+                    Create a new community
+                </div>
+            </div>
+
+
+            <div class="nav-main">
+                <a href="/index.php"><div class="button">
+                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
+                    <div class="name">Home</div>
+                </div></a>
+                <a href="/top"><div class="button">
+                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
+                    <div class="name">Top</div>
+                </div></a>
+                <a href="/last"><div class="button">
+                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
+                    <div class="name">Last</div>
+                </div></a>
+                <!-- #1234 Jeśli użytkownik jest zalogowany - favourite, jeśli nie, /signIn-->
+                <a href="/favourite"><div class="button">
+                <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
+                <div class="name">Favourite</div>
+            </div></a>
+            </div>
+
+            <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany -->
+            <div class="nav-user">
+                <div class="header">
+                    Your community
+                </div>
+
+                <div class="community-list">
+                    <!-- #1234 Załaduj wszystkie lubiane społeczności użytkownika-->
+                    <div class="community" id="0">
+                        <div class="cm-button">
+                            <div class="cm-icon"><i class="fa-solid fa-circle-user"></i></div>
+                            <div class="cm-name">Nazwa społeczności</div>
+                        </div>
+                        <div class="cm-star-button" style="color: yellow">
+                            <div class="icon"><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- #1234 Jeśli użytkownik jest zalogowany - otwiera panel, jeśli nie - otwiera stronę logowania -->
+            <button class="post-new-meme" id="post-a-new-meme-button" onclick="togglePostANewMeme()">
+                Post a new meme
+            </button>
+
+            <!-- #1234 Wyświetl, jeśli użytkownik nie jest zalogowany-->
+            <div id="button-down-wrapper">
+                <div class="button-down">
+                    <a href="signIn">
+                        <div class="button sign-in">
+                            Sign In
+                        </div>
+                    </a>
+
+                    <a href="signUp">
+                        <div class="button sign-up">
+                            Sign Up
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- #1234 Wyświetl, jeśli użytkownik jest zalogowany-->
+            <div id="user-info-wrapper">
+                <div id="user-info-menu" class="user-info">
+                    <div class="user-logo">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </div>
+                    <div class="user-nick">
+                        UserNick123
+                    </div>
+                    <form action="logout" method="POST">
+                        <button type="submit" formaction="logout" formmethod="POST">
+                            <div class="user-button">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-center">
+        <div class="header">
+            <button id="menu-button" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- #1234 Pobieranie aktualnej nazwy społeczności/typu strony-->
+            <span id="community-name">Home</span>
+        </div>
+        <!-- #1234 Pobieranie wszystkich memów -->
+        <div class="meme-container" id="IDMema">
+            <div class="meme-header">
+                <div class="user">
+                    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+                    <div class="user-name">UserName123</div>
+                </div>
+                <div class="community-name">Community123</div>
+            </div>
+
+            <div class="meme-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                when an unknown printer took a galley of type and scrambled it to make a type 
+                specimen book.
+            </div>
+
+            <div class="meme-content">
+                <!-- #1234 wczytanie obrazu-->
+                <img src="">
+            </div>
+
+            <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany-->
+            <div class="meme-footer">
+                <div class="meme-footer-panel-left">
+                    <button class="like-button"> <i class="fa-solid fa-square-caret-up"></i></button>
+                    <button class="dislike-button"><i class="fa-solid fa-square-caret-down"></i></i></button>
+
+                    <span class="vote-number">
+                        142
+                    </span>
+                </div>
+
+                <div class="meme-footer-panel-right">
+                    <button class="favourite-meme-button"><i class="fa-solid fa-star"></i></button>
+                    <button class="remove-button"><i class="fa-solid fa-trash-can"></i></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-right">
+        <!-- #1234 Wyświetl, jeśli użytkownik jest zalogowany-->
+        <div id="user-info-right" class="user-info" style="display: none;">
+            <div class="user-logo">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+            <div class="user-nick">
+                UserNick123
+            </div>
+            <form action="logout" method="POST">
+                <button type="submit" formaction="logout" formmethod="POST">
+                    <div class="user-button">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <div id="signInUpButton">
+            <a href="signIn">
+                <div class="button sign-in">
+                    Sign In
+                </div>
+            </a>
+
+            <a href="signUp">
+                <div class="button sign-up">
+                    Sign Up
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<template id="community-template">
+    <div class="community">
+        <div class="cm-button">
+            <div class="cm-icon"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="cm-name">community-name</div>
+        </div>
+        <div class="cm-star-button">
+            <div class="icon"><i class="fa-solid fa-star"></i></div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+    function toggleMenu(){
+        var panel = document.getElementById("panel-left");
+        var bg_button = document.getElementById("bg-button");
+        if(panel.style.display=='' || panel.style.display=='none' || panel.style.display=='flex'){
+            panel.setAttribute('style', 'display: initial !important');
+            bg_button.setAttribute('style', 'display: initial');
+        }
+        else{
+            panel.setAttribute('style', 'display: none !important');
+            bg_button.setAttribute('style', 'display: none');
+        }
+    }
+
+    var bg_button = document.getElementById("bg-button");
+    if(bg_button!=null){
+        bg_button.addEventListener('click', function handleClick() {
+            toggleMenu();
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    function togglePostANewMeme(){
+        var panel = document.getElementById("post-a-new-meme-container");
+
+        if(panel.style.display=='flex'){
+            panel.setAttribute('style','display: none !important');
+        }
+        else{
+            panel.setAttribute('style','display: flex !important');
+        }
+    }
+
+    function toggleSearchResult(){
+        var search_result = document.getElementById("search-result");
+        var bg_button = document.getElementById("bg-button");
+
+        if(search_result.style.display=='block'){
+            search_result.setAttribute('style','display: none !important');
+            bg_button.setAttribute('style','display: none !important');
+        }
+        else{
+            search_result.setAttribute('style','display: block !important');
+            bg_button.setAttribute('style','display: block !important');
+        }
+    }
+
+    function toggleCreateANewCommunity(){
+        var panel = document.getElementById("create-a-new-community-container");
+
+        if(panel.style.display=='flex'){
+            panel.setAttribute('style','display: none !important');
+        }
+        else{
+            panel.setAttribute('style','display: flex !important');
+        }
+    }
+</script>
+
+<script type="text/javascript">
+        //Walka z responsywnością
+        function checkSize() {
+            var panel = document.getElementById("panel-left");
+            var bg_button = document.getElementById("bg-button");
+            if (window.innerWidth >= 900 && panel.style.display=='none') {
+                panel.setAttribute('style', 'display: initial');
+            }
+            if (window.innerWidth >= 1100 && panel.style.display=='initial') {
+                panel.setAttribute('style', 'display: flex');
+            }
+
+            if(window.innerWidth>=900){
+                bg_button.setAttribute('style', 'display: none;');
+            }
+
+            if(window.innerWidth<900 && panel.style.display=='initial'){
+                bg_button.setAttribute('style', 'display: initial');
+            }
+        }
+        function firstLoad(){
+            var panel = document.getElementById("panel-left");
+            panel.setAttribute('style', 'display: flex');
+        }
+        window.onresize = checkSize;
+        window.onload = firstLoad;
+</script>
+
+</html>

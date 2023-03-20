@@ -1,0 +1,774 @@
+$bgColor: #171717;
+$gray1: #616161;
+$color1: #ffc03b;
+$color2: #ff7646;
+
+body{
+    background-color: $bgColor;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+    align-items: start;
+}
+
+.container{
+    width: 98vw;
+    margin-left: auto;
+    margin-right: auto;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    #panel-left{
+        width: calc((100vw - 800px)/2);
+        z-index: 10;
+        color: white;
+
+        top: 0px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .panel-left-left{
+            margin-top: 15px;
+        }
+
+        .panel-left-right{
+            margin-top: 15px;
+            width: 250px;
+
+            position: relative;
+            align-items: start;
+
+            #search-result{
+                display: none;
+                background-color: $bgColor;
+                width: 100%;
+                height: 400px;
+                position: absolute;
+                top: 30px;
+
+                border: 1px solid $gray1;
+                z-index: 1;
+
+                #search-result-content{
+                    height: 320px;
+                }
+
+                #create-a-new-community{
+                    background-color: rgba(255,118,70,1);
+                    width: 200px;
+                    border-radius: 15px;
+                    border: 2px solid white;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    text-align: center;
+                    margin-top: 15px;
+                    margin-bottom: 25px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+
+            input{
+                width: 100%;
+                height: 25px;
+                border-radius: 10px;
+                border: 1px solid $gray1;
+                background-color: $bgColor;
+
+                z-index: 50;
+
+                color: white;
+            }
+
+            .nav-main{
+                display: flex;
+                flex-direction: column;
+                margin-top: 25px;
+                font-size: 1em;
+            }
+
+            .button{
+                padding: 25px 0 0 25px;
+
+                .icon{
+                    float: left;
+                }
+
+                .name{
+                    float: left;
+                    margin-left: 15px;
+                }
+            }
+
+            .nav-user{
+                width: 100%;
+                max-height: 500px;
+                margin-top: 25px;
+                margin-bottom: 100px;
+                color: gray;
+
+                .header{
+                    border-bottom: 2px solid gray;
+                    padding-bottom: 5px;
+                }
+
+                .community-list{
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 1em;
+                    overflow-y: scroll;
+
+                    height: inherit;
+                    max-height: 400px;
+                }
+
+                .community-list::-webkit-scrollbar {
+                    width: 12px;
+                }
+                
+                .community-list::-webkit-scrollbar-track {
+                    background-color: #363636;
+                }
+                
+                .community-list::-webkit-scrollbar-thumb {
+                    background-color: gray;
+                }
+            }
+
+            .post-new-meme{
+                text-align: center;
+                padding: 10px;
+                
+                display: block;
+                color: white;
+                font-size: 1.1em;
+
+                width: 170px;
+
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 25px;
+
+                background: linear-gradient(180deg, rgba(255,118,70,1) 0%, rgba(255,192,59,1) 100%);
+                border: 2px solid #fff;
+                border-radius: 15px;
+            }
+
+            #button-down-wrapper{
+                display: none;
+
+                .button-down{                
+                    display: none;
+                    flex-direction: column;
+                    align-items: center;
+    
+                    .button:hover{
+                        cursor: pointer;
+                    }
+            
+                    .button{
+                        height: 15px;
+                        width: 80px;
+                        text-align: center;
+                        font-weight: 800;
+                        line-height: 15px;
+                        margin-right: 15px;
+                        margin-top: 15px;
+                        padding: 10px;
+                        border-radius: 10px;
+                    }
+            
+                    .sign-up{
+                        background: linear-gradient(180deg, rgba(255,118,70,1) 0%, rgba(255,192,59,1) 100%);
+                        border: 2px solid #fff;
+                    }
+            
+                    .sign-in{
+                        border: 2px solid $gray1;
+                    }
+                }
+            }
+        }
+    }
+
+    .panel-center{
+        width: 700px;
+        min-height: 100vh;
+
+        border-left: 1px solid $gray1;
+        border-right: 1px solid $gray1;
+
+        .header{
+            z-index: 1000;
+
+            position: sticky;
+            top: 0px;
+
+            background-color: $bgColor;
+            width: 100%;
+
+            border-bottom: 1px solid $gray1;
+            font-size: 1.5em;
+            padding: 25px 0;
+            font-weight: 800;
+
+            opacity: 95%;
+
+            #menu-button{
+                display: none;
+                float: left;
+                padding: 10px 25px;
+                margin-top: -25px;
+                font-size: 2em;
+                color: white;
+                background-color: inherit;
+                border: none;
+            }
+
+            #community-name{
+                margin-left: 25px;
+            }
+        }
+    }
+
+    .panel-right{
+        width: calc((100vw - 800px)/2);
+
+        position: sticky;
+        top: 0px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+
+        align-items: start;
+
+        .button:hover{
+            cursor: pointer;
+        }
+
+        #signInUpButton{
+            display: inline;
+            margin-left: 25px;
+
+            .button{
+                height: 15px;
+                width: 80px;
+                text-align: center;
+                font-weight: 800;
+                line-height: 15px;
+                margin-right: 15px;
+                margin-top: 15px;
+                padding: 10px;
+                border-radius: 10px;
+
+                float: left;
+            }
+    
+            .sign-up{
+                background: linear-gradient(180deg, rgba(255,118,70,1) 0%, rgba(255,192,59,1) 100%);
+                border: 2px solid #fff;
+            }
+    
+            .sign-in{
+                border: 2px solid $gray1;
+            }
+        }
+    }
+}
+
+#user-info-right{
+    display: none;
+    justify-content: space-between;
+}
+
+#user-info-menu{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+
+    width: 225px;
+
+    display: none;
+    justify-content: space-between;
+}
+
+.user-info{
+    min-width: 200px;
+    font-size: 0.8em;
+    margin: 25px 25px 0 0;
+
+    .user-logo{
+        padding: 15px;
+    }
+
+    .user-nick{
+        padding: 15px 0 15px 0;
+    }
+
+    .user-button {
+        padding: 15px;
+        border-left: 1px solid $gray1;
+    }
+
+    form{
+        button{
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: inherit;
+            color: white;
+        }
+    }
+
+    border: 1px solid $gray1;
+}
+
+.meme-container{
+    width: 100%;
+
+    border-bottom: 1px solid $gray1;
+    margin-top: 10px;
+
+    .meme-header{
+        display: flex;
+        flex-direction: row;
+
+        margin-left: 25px;
+        margin-right: 25px;
+
+        justify-content: space-between;
+        font-size: 1.1em;
+        line-height: 2em;
+
+        padding: 10px 0;
+
+        .user{
+            .user-icon{
+                float: left;
+                font-size: 2em;
+            }
+            .user-name{
+                float: left;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .meme-text{
+        margin-left: 25px;
+        margin-right: 25px;
+
+        text-align: justify;
+        padding: 10px 0;
+
+    }
+
+    .meme-content{
+        margin-left: 25px;
+        margin-right: 25px;
+        
+        img{
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .meme-footer{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        margin-left: 25px;
+        margin-right: 25px;
+        color: white;
+
+        padding: 10px 0;
+
+        button{
+            border: none;
+            background-color: rgba(255, 0, 0, 0);
+            font-size: inherit;
+            color: white;
+            font-size: 2em;
+        }
+
+        button:hover{
+            cursor: pointer;
+        }
+
+        .meme-footer-panel-left{
+            color: $gray1;
+
+            .vote-number{
+                position: relative;
+                top: -5px;
+                color: white;
+            }
+        }
+    }
+}
+
+.community{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 10px 25px;
+
+    .cm-button{
+        overflow: hidden;
+
+        .cm-icon{
+            float: left;
+        }
+
+        .cm-name{
+            float: left;
+            margin-left: 15px;
+        }
+    }
+
+    .star-button{
+        margin-right: 15px;
+    }
+}
+
+#bg-button{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    background-color: #1717178f;
+}
+
+#create-a-new-community-container{
+    position: fixed;
+    background-color: #171717c5;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    align-items: center;
+
+    .container{
+        background-color: $bgColor;
+        width: 600px;
+        height: 330px;
+        border: 1px solid $gray1;
+
+        position: relative;
+        display: block;
+
+        .header{
+            font-size: 2em;
+            width: 100%;
+            margin: 25px 0 0 25px;
+        }
+
+        form{
+            margin: 25px 0 0 25px;
+
+            input[type=text]{
+                padding: 10px;
+                box-sizing: border-box;
+            }
+        }
+
+        .comm-buttons{
+            display: flex;
+            justify-content: right;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            margin-right: 25px;
+    
+            button{
+                padding: 10px;
+                font-size: 1.5em;
+                font-weight: 800;
+                width: 150px;
+                margin-left: 25px;
+            }
+    
+            button:hover{
+                cursor: pointer;
+            }
+    
+            #BCancel{
+                border: 2px solid #D9D9D9;
+                background-color: #17171700;
+                color: #D9D9D9;
+                margin-left: 25px;
+            }
+        }
+    }
+
+    
+}
+
+#post-a-new-meme-container{
+    position: fixed;
+    background-color: #171717c5;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    align-items: center;
+
+    .container{
+        width: 800px;
+        min-height: 600px;
+        background-color: #252525;
+        border-radius: 15px;
+        position: relative;
+
+        #PANM-header{
+            position: absolute;
+            font-size: 2em;
+            top: -50px;
+            left: 25px;
+        }
+
+        form{
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+
+            #upload + label {
+                width: 150px;
+                text-align: center;
+                padding: 25px;
+                border-radius: 25px;
+                font-size: 1.25em;
+                font-weight: 800;
+                display: inline-block;
+                border: 2px solid #D9D9D9;
+                color: #D9D9D9;
+            }
+
+            #upload + label:hover {
+                background-color: #161616;
+                cursor: pointer;
+            }
+
+            #upload {
+                width: 100px;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+            }
+
+            input[type=text]{
+                padding: 10px;
+                box-sizing: border-box;
+            }
+        }
+
+        #PANM-community{
+            margin-top: 25px;
+            background-color: #161616;
+            color: white;
+        }
+        
+        #PANM-text{
+            background-color: #222222;
+            border: 2px solid #3A3A3A;
+            width: 100%;
+            text-overflow: clip;
+            font-size: 1.3em;
+            border-radius: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 25px;
+            color: white;
+            
+        }
+
+        #PANM-wrapper{
+            width: 100%;
+            height: 450px;
+            background-color: #222222;
+            border: 2px solid #3A3A3A;
+            border-radius: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #PANM-buttons{
+            display: flex;
+            justify-content: right;
+            margin-top: 25px;
+            margin-bottom: 25px;
+
+            button{
+                padding: 10px;
+                font-size: 1.5em;
+                font-weight: 800;
+                width: 150px;
+                margin-left: 25px;
+            }
+
+            button:hover{
+                cursor: pointer;
+            }
+
+            #BCancel{
+                border: 2px solid #D9D9D9;
+                background-color: #17171700;
+                color: #D9D9D9;
+                margin-left: 25px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1700px) {
+    #panel-left{
+        width: calc((100vw - 600px)/2) !important;
+    }
+
+    .panel-right{
+        width: calc((100vw - 1000px)/2) !important;
+
+        display: flex;
+        flex-direction: column !important;
+        justify-content: start !important;
+
+        align-items: flex-end !important;
+    }
+}
+
+@media screen and (max-width: 1500px){
+    .panel-right{
+        #user-info-right{
+            display: none !important;
+        }
+
+
+    }
+
+    .panel-left-right{
+        #user-info-menu{
+            display: flex !important;
+        }
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    #panel-left{
+        width: calc((100vw - 400px)/2) !important;
+    }
+
+    .panel-right{
+        width: calc((100vw - 1100px)/2) !important;
+        min-width: 150px !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #panel-left{
+        display: initial !important;
+
+        .panel-left-left{
+            text-align: center;
+        }
+
+        .panel-left-right{
+            margin: auto;
+            width: 250px !important;
+            margin-top: 30px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #panel-left{
+        display: initial !important;
+    }
+    .panel-right{
+        display: none !important;
+    }
+
+    .button-down{
+        display: flex !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    #panel-left{
+        display: none !important;
+        position: fixed;
+        top: 80px !important;
+        background-color: $bgColor;
+        width: 270px !important;
+        z-index: 50;
+        overflow-y: scroll;
+        height: calc(100vh - 80px) !important;
+    }
+
+    #panel-left::-webkit-scrollbar {
+        width: 12px;
+    }
+    
+    #panel-left::-webkit-scrollbar-track {
+        background-color: #363636;
+    }
+    
+    #panel-left::-webkit-scrollbar-thumb {
+        background-color: gray;
+    }
+
+    .panel-center{
+        width: 800px !important;
+        margin: auto !important;
+
+        #menu-button{
+            display: inline !important;
+        }
+    }
+}
+
+@media screen and (max-width: 500px){
+    .meme-container{
+        .meme-header{
+            margin-left: 10px;
+            margin-right: 10px;
+    
+            font-size: 1em;
+        }
+    
+        .meme-text{
+            margin-left: 10px;
+            margin-right: 10px;
+    
+            font-size: 0.9em;
+        }
+    
+        .meme-content{
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    
+        .meme-footer{
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    }
+}
