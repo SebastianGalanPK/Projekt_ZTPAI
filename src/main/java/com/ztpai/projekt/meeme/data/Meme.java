@@ -1,21 +1,35 @@
 package com.ztpai.projekt.meeme.data;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
+import java.util.Date;
+import java.util.Set;
+
+@Entity
 public class Meme {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String text;
+
+    @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "post_date")
     private Date postDate;
 
+    @Column(name = "id_user")
     private int userID;
+    @Column(name = "id_community")
     private int communityID;
 
     private String communityNickname;
     private String userLogin;
+
+    @ManyToMany(mappedBy =  "favouriteMemes")
+    private Set<User> favouriteUsers;
 
     private final String UPLOAD_DIRECTORY = "/../public/uploads/";
 
