@@ -1,6 +1,5 @@
 package com.ztpai.projekt.meeme.data;
 
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
