@@ -21,11 +21,9 @@
             <span id="meeme">MEEME</b></span>
         </div>
         <div class="form-container">
-            <form action="login" method="POST">
+            <form action="/login" method="POST">
                 <span class="form-title">Sign in...</span>
-                <span class="form-info">
-                    Error message #2114 
-                    </span>
+                <span id="form-info"></span>
                 <input name="login" type="text" placeholder="Login">
                 <input name="password" type="password" placeholder="Password">
                 <span class="forgot-password link">Forgot password?</span>
@@ -42,4 +40,33 @@
     </div>
 </div>
 </body>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  var login = document.querySelector('input[name="login"]').value;
+  var password = document.querySelector('input[name="password"]').value;
+
+  var formData = new FormData();
+  formData.append('login', login);
+  formData.append('password', password);
+
+  fetch('/login', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(response) {
+    return response.text()
+  })
+  .then(function(data) {
+    // Wyświetl wynik w elemencie <span>
+     console.log("GGG");
+    document.querySelector('#form-info').textContent = data;
+     console.log(data);
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+});
+</script>
 </html>

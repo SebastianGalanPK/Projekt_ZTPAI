@@ -6,7 +6,7 @@ search.addEventListener("keyup", function (event) {
 
     const data = {search: this.value};
 
-    fetch("/search", {
+    fetch("/community/search", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

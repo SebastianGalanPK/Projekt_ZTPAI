@@ -21,11 +21,9 @@
             <span id="meeme"><b>MEEME</b></span>
         </div>
         <div class="form-container">
-            <form action="register" method="POST">
+            <form action="/register" method="POST" onsubmit="return false;">
                 <span class="form-title">Sign up...</span>
-                <span class="form-info">
-                    Error message #2251
-                    </span>
+                <span id="form-info"></span>
                 <input name="login" type="text" placeholder="Login">
                 <input name="password" type="password" placeholder="Password">
                 <input name="email" type="text" placeholder="Email">
@@ -42,4 +40,33 @@
     </div>
 </div>
 </body>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  var login = document.querySelector('input[name="login"]').value;
+  var password = document.querySelector('input[name="password"]').value;
+  var email = document.querySelector('input[name="email"]').value;
+
+  var formData = new FormData();
+  formData.append('login', login);
+  formData.append('password', password);
+  formData.append('email', email);
+
+  fetch('/register', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(response) {
+    return response.text()
+  })
+  .then(function(data) {
+    // Wyświetl wynik w elemencie <span>
+    document.querySelector('#form-info').textContent = data;
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+});
+</script>
 </html>

@@ -2,9 +2,17 @@ package com.ztpai.projekt.meeme.data;
 
 import java.util.Set;
 
+import com.ztpai.projekt.meeme.data.dto.RegisterDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
@@ -32,35 +40,11 @@ public class User {
     )
     private Set<Meme> favouriteMemes;
 
-    public User(int id, String login, String password, String email, int rankID) {
-        this.id = id;
+    public User(String login, String password, String email){
         this.login = login;
         this.password = password;
         this.email = email;
-        this.rankID = rankID;
-    }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getRankID() {
-        return rankID;
-    }
-
-    public Set<Community> getCommunities() {
-        return communities;
+        this.rankID = 1;
     }
 }

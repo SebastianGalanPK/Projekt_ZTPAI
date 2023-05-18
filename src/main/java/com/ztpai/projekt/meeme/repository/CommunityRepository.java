@@ -1,6 +1,8 @@
 package com.ztpai.projekt.meeme.repository;
 
 import com.ztpai.projekt.meeme.data.Community;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityRepository {
+@Repository
+public interface CommunityRepository extends JpaRepository<Community, Long> {
 
-    public int addCommunity(String name, String nickname){
+
+
+    /*public int addCommunity(String name, String nickname){
         try{
             PreparedStatement ps = DataBase.getInstance().con.prepareStatement("INSERT INTO public.\"Community\"(name, nickname) VALUES (?, ?);");
             ps.setString(1, name);
@@ -71,5 +76,5 @@ public class CommunityRepository {
         }
 
         return -1;
-    }
+    }*/
 }
