@@ -2,7 +2,6 @@ package com.ztpai.projekt.meeme.data;
 
 import java.util.Set;
 
-import com.ztpai.projekt.meeme.data.dto.RegisterDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +25,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "LikedCommunity",
+            name = "liked_community",
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_community")
     )
@@ -34,11 +33,14 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "FavouriteMeme",
+            name = "favourite_meme",
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_meme")
     )
     private Set<Meme> favouriteMemes;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Meme> ownMemes;
 
     public User(String login, String password, String email){
         this.login = login;
@@ -46,5 +48,9 @@ public class User {
         this.email = email;
 
         this.rankID = 1;
+    }
+
+    public User(int id){
+        this.id = id;
     }
 }

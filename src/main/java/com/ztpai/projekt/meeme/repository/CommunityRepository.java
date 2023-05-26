@@ -1,6 +1,7 @@
 package com.ztpai.projekt.meeme.repository;
 
 import com.ztpai.projekt.meeme.data.Community;
+import com.ztpai.projekt.meeme.data.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Long> {
-
-
+    User findById(String id);
 
     /*public int addCommunity(String name, String nickname){
         try{

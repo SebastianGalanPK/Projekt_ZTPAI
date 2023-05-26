@@ -13,9 +13,11 @@
 
     <script src="https://kit.fontawesome.com/2282473dfd.js" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="/public/js/search.js" defer></script>
-    <script type="text/javascript" src="/public/js/memeManager.js" defer></script>
-    <script type="text/javascript" src="/public/js/communityManager.js" defer></script>
+    <script type="text/javascript" src="/js/search.js" defer></script>
+    <script type="text/javascript" src="/js/memeManager.js" defer></script>
+    <script type="text/javascript" src="/js/communityManager.js" defer></script>
+
+    <script type="text/javascript" src="/js/memeLoader.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -51,11 +53,11 @@
         <div class="container">
             <div class="header">Create a new community</div>
 
-            <form action="addNewCommunity" method="POST" ENCTYPE="multipart/form-data">
+            <form id="create-new-community-form" action="community" method="POST" ENCTYPE="multipart/form-data" onsubmit="return false;">
                 <label for="Comm-name">Name:  </label><br>
-                <input name="comm-name" id="comm-name" type="text" placeholder="Name"><br><br>
+                <input name="name" id="comm-name" type="text" placeholder="Name"><br><br>
                 <label for="Comm-shortname">Shortname:  </label><br>
-                <input name="comm-shortname" id="comm-shortname" type="text" placeholder="Short name">
+                <input name="nickname" id="comm-shortname" type="text" placeholder="Short name">
 
                 <div class="comm-buttons">
                     <button id="BCancel" type="button" onclick="toggleCreateANewCommunity()">CANCEL</button>
@@ -178,44 +180,11 @@
             <!-- #1234 Pobieranie aktualnej nazwy społeczności/typu strony-->
             <span id="community-name">Home</span>
         </div>
-        <!-- #1234 Pobieranie wszystkich memów -->
-        <div class="meme-container" id="IDMema">
-            <div class="meme-header">
-                <div class="user">
-                    <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
-                    <div class="user-name">UserName123</div>
-                </div>
-                <div class="community-name">Community123</div>
-            </div>
-
-            <div class="meme-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                when an unknown printer took a galley of type and scrambled it to make a type 
-                specimen book.
-            </div>
-
-            <div class="meme-content">
-                <!-- #1234 wczytanie obrazu-->
-                <img src="">
-            </div>
-
-            <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany-->
-            <div class="meme-footer">
-                <div class="meme-footer-panel-left">
-                    <button class="like-button"> <i class="fa-solid fa-square-caret-up"></i></button>
-                    <button class="dislike-button"><i class="fa-solid fa-square-caret-down"></i></i></button>
-
-                    <span class="vote-number">
-                        142
-                    </span>
-                </div>
-
-                <div class="meme-footer-panel-right">
-                    <button class="favourite-meme-button"><i class="fa-solid fa-star"></i></button>
-                    <button class="remove-button"><i class="fa-solid fa-trash-can"></i></i></button>
-                </div>
-            </div>
+        <div id="meme-wrapper">
+            
         </div>
+
+        <!-- #1234 Pobieranie wszystkich memów -->
     </div>
 
     <div class="panel-right">
@@ -265,6 +234,47 @@
         </div>
     </div>
 </template>
+
+<template id="meme-template">
+    <div class="meme-container" id="IDMema">
+        <div class="meme-header">
+            <div class="user">
+                <div class="user-icon"><i class="fa-solid fa-circle-user"></i></div>
+                <div class="user-name">UserName123</div>
+            </div>
+            <div class="community-name">Community123</div>
+        </div>
+
+        <div class="meme-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            when an unknown printer took a galley of type and scrambled it to make a type 
+            specimen book.
+        </div>
+
+        <div class="meme-content">
+            <!-- #1234 wczytanie obrazu-->
+            <img src="ss">
+        </div>
+
+        <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany-->
+        <div class="meme-footer">
+            <div class="meme-footer-panel-left">
+                <button class="like-button"> <i class="fa-solid fa-square-caret-up"></i></button>
+                <button class="dislike-button"><i class="fa-solid fa-square-caret-down"></i></i></button>
+
+                <span class="vote-number">
+                    142
+                </span>
+            </div>
+
+            <div class="meme-footer-panel-right">
+                <button class="favourite-meme-button"><i class="fa-solid fa-star"></i></button>
+                <button class="remove-button"><i class="fa-solid fa-trash-can"></i></i></button>
+            </div>
+        </div>
+    </div>
+</template>
+
 
 <script type="text/javascript">
     function toggleMenu(){
@@ -352,6 +362,34 @@
         }
         window.onresize = checkSize;
         window.onload = firstLoad;
+</script>
+
+<script type="text/javascript">
+  document.querySelector('#create-new-community-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  var name = document.querySelector('input[name="name"]').value;
+  var nickname = document.querySelector('input[name="nickname"]').value;
+
+  var formData = new FormData();
+  formData.append('name', name);
+  formData.append('nickname', nickname);
+
+  fetch('/community', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(response) {
+    return response.text()
+  })
+  .then(function(data) {
+    toggleCreateANewCommunity();
+    alert("Stworzono nową społeczność!");
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+});
 </script>
 
 </html>

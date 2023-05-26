@@ -11,6 +11,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="community")
 public class Community {
 
     @Id
@@ -22,8 +23,15 @@ public class Community {
     @ManyToMany(mappedBy =  "communities")
     Set<User> users;
 
+    @OneToMany(mappedBy = "community")
+    private Set<Meme> memes;
+
     public Community(String name, String nickname) {
         this.name = name;
         this.nickname = nickname;
+    }
+
+    public Community(int id) {
+        this.id = id;
     }
 }

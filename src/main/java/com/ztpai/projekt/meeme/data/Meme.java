@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="meme")
 public class Meme {
 
     @Id
@@ -26,16 +27,16 @@ public class Meme {
     @Column(name = "post_date")
     private Date postDate;
 
-    @Column(name = "id_user")
-    private int userID;
-    @Column(name = "id_community")
-    private int communityID;
+    @ManyToOne
+    @JoinColumn(name="id_user", referencedColumnName = "id")
+    private User user;
 
-    private String communityNickname;
-    private String userLogin;
+    @ManyToOne
+    @JoinColumn(name="id_community", referencedColumnName = "id")
+    private Community community;
 
     @ManyToMany(mappedBy =  "favouriteMemes")
     private Set<User> favouriteUsers;
 
-    private final String UPLOAD_DIRECTORY = "/../public/uploads/";
+    //private final String UPLOAD_DIRECTORY = "/../public/uploads/";
 }

@@ -1,11 +1,8 @@
 package com.ztpai.projekt.meeme.controller;
 
 import com.ztpai.projekt.meeme.data.Community;
-import com.ztpai.projekt.meeme.data.Meme;
 import com.ztpai.projekt.meeme.data.dto.CommunityDto;
-import com.ztpai.projekt.meeme.data.dto.MemeDto;
 import com.ztpai.projekt.meeme.repository.CommunityRepository;
-import com.ztpai.projekt.meeme.repository.MemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
