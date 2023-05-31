@@ -21,11 +21,11 @@
             <span id="meeme">MEEME</b></span>
         </div>
         <div class="form-container">
-            <form action="/login" method="POST">
+            <form id="loginForm" action="/api/v1/auth/authenticate" method="POST">
                 <span class="form-title">Sign in...</span>
                 <span id="form-info"></span>
-                <input name="login" type="text" placeholder="Login">
-                <input name="password" type="password" placeholder="Password">
+                <input id="login" name="login" type="text" placeholder="Login">
+                <input id="password" name="password" type="password" placeholder="Password">
                 <span class="forgot-password link">Forgot password?</span>
                 <div class="button-container">
                     <button class="sign-in link" type="submit">Sign In</button>
@@ -41,32 +41,38 @@
 </div>
 </body>
 <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-  event.preventDefault();
+  document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Zatrzymaj domyślne działanie formularza
 
-  var login = document.querySelector('input[name="login"]').value;
-  var password = document.querySelector('input[name="password"]').value;
+    // Pobierz dane z formularza
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
 
-  var formData = new FormData();
-  formData.append('login', login);
-  formData.append('password', password);
+    // Przekształć dane na obiekt JSON
+    var data = {
+      login: login,
+      password: password
+    };
 
-  fetch('/login', {
-    method: 'POST',
-    body: formData
-  })
-  .then(function(response) {
-    return response.text()
-  })
-  .then(function(data) {
-    // Wyświetl wynik w elemencie <span>
-     console.log("GGG");
-    document.querySelector('#form-info').textContent = data;
-     console.log(data);
-  })
-  .catch(function(error) {
-    console.log(error);
+    // Wyślij żądanie AJAX do kontrolera
+    fetch("/api/v1/auth/authenticate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(responseData) {
+        // Obsłuż odpowiedź
+        console.log(responseData);
+      })
+      .catch(function(error) {
+        // Obsłuż błąd
+        console.error(error);
+      });
   });
-});
 </script>
 </html>

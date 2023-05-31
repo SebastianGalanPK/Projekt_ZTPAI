@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     UserRepository repository;
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<String> register(@ModelAttribute("RegisterDto") RegisterDto registerDto){
         if(repository.findByLogin(registerDto.getLogin())!=null){
             return new ResponseEntity<>("Login is already taken!", HttpStatus.BAD_REQUEST);
@@ -32,7 +32,7 @@ public class UserController {
         repository.save(user);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/users")
     public List<User> getAllMemes(){
@@ -40,7 +40,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public String login(@ModelAttribute("LoginDto") LoginDto loginDto){
         User user = repository.findByLogin(loginDto.getLogin());
 
@@ -48,14 +48,14 @@ public class UserController {
             return "There is no user with given login and password!";
         }
         else{
-            /*if(BCrypt.checkpw(loginDto.getPassword(), user.getPassword())){
+            *//*if(BCrypt.checkpw(loginDto.getPassword(), user.getPassword())){
                 return "There is no user with given login and password!";
-            }*/
+            }*//*
             if(!loginDto.getPassword().equals(user.getPassword())){
                 return "There is no user with given login and password!";
             }
         }
 
         return "User login success!";
-    }
+    }*/
 }

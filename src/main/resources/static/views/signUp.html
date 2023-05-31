@@ -21,12 +21,12 @@
             <span id="meeme"><b>MEEME</b></span>
         </div>
         <div class="form-container">
-            <form action="/register" method="POST" onsubmit="return false;">
+            <form id="registerForm" action="/api/v1/auth/register" method="POST">
                 <span class="form-title">Sign up...</span>
                 <span id="form-info"></span>
-                <input name="login" type="text" placeholder="Login">
-                <input name="password" type="password" placeholder="Password">
-                <input name="email" type="text" placeholder="Email">
+                <input id="login" name="login" type="text" placeholder="Login">
+                <input id="password" name="password" type="password" placeholder="Password">
+                <input id="email" name="email" type="text" placeholder="Email">
                 <div class="button-container">
                     <button class="sign-in link" type="submit">Sign Up</button>
                     <a href="signIn"><button class="sign-up link" type="button">Already have?<br> Sign In</button></a>
@@ -41,32 +41,40 @@
 </div>
 </body>
 <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-  event.preventDefault();
+  document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Zatrzymaj domyślne działanie formularza
 
-  var login = document.querySelector('input[name="login"]').value;
-  var password = document.querySelector('input[name="password"]').value;
-  var email = document.querySelector('input[name="email"]').value;
+    // Pobierz dane z formularza
+    var login = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
+    var email = document.getElementById("email").value;
 
-  var formData = new FormData();
-  formData.append('login', login);
-  formData.append('password', password);
-  formData.append('email', email);
+    // Przekształć dane na obiekt JSON
+    var data = {
+      login: login,
+      password: password,
+      email: email
+    };
 
-  fetch('/register', {
-    method: 'POST',
-    body: formData
-  })
-  .then(function(response) {
-    return response.text()
-  })
-  .then(function(data) {
-    // Wyświetl wynik w elemencie <span>
-    document.querySelector('#form-info').textContent = data;
-  })
-  .catch(function(error) {
-    console.log(error);
+    // Wyślij żądanie AJAX do kontrolera
+    fetch("/api/v1/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(responseData) {
+        // Obsłuż odpowiedź
+        console.log(responseData);
+      })
+      .catch(function(error) {
+        // Obsłuż błąd
+        console.error(error);
+      });
   });
-});
 </script>
 </html>
