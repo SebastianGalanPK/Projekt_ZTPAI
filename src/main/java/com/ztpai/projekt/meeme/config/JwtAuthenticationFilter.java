@@ -2,6 +2,7 @@ package com.ztpai.projekt.meeme.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String login;
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+        if(authHeader != null && !authHeader.startsWith("Bearer ")){
+            String jwt = authHeader.substring(7);
+
+            authenticate(request, jwt);
+
             filterChain.doFilter(request, response);
             return;
         }
+        else{
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("jwtToken")) {
+                        String jwt = cookie.getValue();
 
-        jwt = authHeader.substring(7);
-        login = jwtService.extractLogin(jwt);
+                        authenticate(request, jwt);
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+                }
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+    private void authenticate(@NonNull HttpServletRequest request, String jwt){
+        String login = jwtService.extractLogin(jwt);
         if(login!=null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(login);
 
@@ -57,6 +77,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        filterChain.doFilter(request, response);
     }
 }
