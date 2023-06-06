@@ -51,44 +51,4 @@ public class MemeController {
     public List<Meme> getAllMemes(){
         return repository.findAll();
     }
-
-    /*@GetMapping("/meme/top")
-    public List<Meme> getTopMemes(){
-        return repository.getTopMemes();
-    }*/
-
-/*    @DeleteMapping("/meme/{id}")
-    public int removeMeme(@PathVariable("id") int id){
-        return repository.removeMeme(id);
-    }
-
-    @PostMapping("/meme/like/{id}")
-    public int likeMeme(@PathVariable("id") int id){
-        return repository.rateMeme(id, 1);
-    }
-
-    @PostMapping("/meme/dislike/{id}")
-    public int dislikeMeme(@PathVariable("id") int id){
-        return repository.rateMeme(id, -1);
-    }
-
-    @PostMapping("/meme/favourite/{id}")
-    public int switchFavouriteMeme(@PathVariable("id") int id){
-        return repository.switchFavouriteMeme(id);
-    }
-
-    @GetMapping("/meme/favourite")
-    public List<Meme> getFavourite(){
-        return repository.getFavourite();
-    }
-
-    @GetMapping("/meme/last")
-    public List<Meme> getLast(){
-        return repository.getLast();
-    }
-
-    @GetMapping("/meme/top")
-    public List<Meme> getTop(){
-        return repository.getTop();
-    }*/
 }

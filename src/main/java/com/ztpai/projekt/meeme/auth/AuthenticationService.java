@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -25,8 +27,32 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+    private final DataVerification verification;
+
 
     public AuthenticationResponse register(RegisterRequest request, @NonNull HttpServletResponse response){
+        String verification;
+
+        verification = this.verification.checkLogin(request.getLogin());
+        if(verification != null){
+            return AuthenticationResponse.builder().message(verification).build();
+        }
+
+        verification = this.verification.checkPassword(request.getPassword());
+        if(verification!=null){
+            return AuthenticationResponse.builder().message(verification).build();
+        }
+
+        verification = this.verification.checkEmail(request.getEmail());
+        if(verification!=null){
+            return AuthenticationResponse.builder().message(verification).build();
+        }
+
+        Optional<User> userFromRepository = repository.findByLogin(request.getLogin());
+        if(userFromRepository.isPresent()){
+            return AuthenticationResponse.builder().message("This login is already taken").build();
+        }
+
         var user = User.builder()
                 .login(request.getLogin())
                 .email(request.getEmail())
@@ -44,6 +70,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, @NonNull HttpServletResponse response) {
+        Optional<User> userFromRepo = repository.findByLogin(request.getLogin());
+
+        if(userFromRepo.isEmpty()){
+            return AuthenticationResponse.builder().message("There is no user with given login and password!").build();
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getLogin(),
