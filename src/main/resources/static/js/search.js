@@ -25,7 +25,6 @@ search.addEventListener("keyup", function (event) {
 });
 
 function loadCommunities(communities){
-    console.log(communities);
     communities.forEach(community => {
         createCommunity(community);
     });

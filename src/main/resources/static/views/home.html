@@ -115,7 +115,7 @@
                     Your community
                 </div>
 
-                <div class="community-list">
+                <div id="community-list">
                     <!-- #1234 Załaduj wszystkie lubiane społeczności użytkownika-->
                     <div class="community" id="0">
                         <div class="cm-button">
@@ -134,7 +134,6 @@
                 Post a new meme
             </button>
 
-            <!-- #1234 Wyświetl, jeśli użytkownik nie jest zalogowany-->
             <div id="button-down-wrapper">
                 <div class="button-down">
                     <a href="signIn">
@@ -151,7 +150,6 @@
                 </div>
             </div>
 
-            <!-- #1234 Wyświetl, jeśli użytkownik jest zalogowany-->
             <div id="user-info-wrapper">
                 <div id="user-info-menu" class="user-info">
                     <div class="user-logo">
@@ -183,12 +181,9 @@
         <div id="meme-wrapper">
 
         </div>
-
-        <!-- #1234 Pobieranie wszystkich memów -->
     </div>
 
     <div class="panel-right">
-        <!-- #1234 Wyświetl, jeśli użytkownik jest zalogowany-->
         <div id="user-info-right" class="user-info" style="display: none;">
             <div class="user-logo">
                 <i class="fa-solid fa-circle-user"></i>
@@ -392,23 +387,31 @@
 </script>
 
 <script type="text/javascript">
-        fetch('/user')
-          .then(response => response.json())
-          .then(data => {
-            if (data.hasOwnProperty('login')) {
-              document.getElementById('signInUpButton').style.display = 'none';
-              document.getElementById('user-info-right').style.display = 'flex';
+fetch('/user')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Wystąpił błąd sieciowy');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data !== null) {
+        if (data.hasOwnProperty('login')) {
+          document.getElementById('signInUpButton').style.display = 'none';
+          document.getElementById('user-info-right').style.display = 'flex';
 
-                var divs = document.getElementsByClassName('user-nick');
+          var divs = document.getElementsByClassName('user-nick');
 
-                for (var i = 0; i < divs.length; i++) {
-                  divs[i].innerHTML = data.login;
-                }
-            }
-          })
-          .catch(error => {
-            console.error('Wystąpił błąd podczas pobierania danych użytkownika:', error);
-          });
+          for (var i = 0; i < divs.length; i++) {
+            divs[i].innerHTML = data.login !== null ? data.login : '';
+          }
+        }
+      } else {
+      }
+    })
+    .catch(error => {
+
+    });
     </script>
 
 </html>

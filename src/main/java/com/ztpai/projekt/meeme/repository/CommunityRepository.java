@@ -18,4 +18,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     @Query("SELECT c FROM Community c WHERE c.nickname LIKE :searchTerm% OR c.name LIKE :searchTerm%")
     List<Community> searchCommunity(@Param("searchTerm") String searchTerm);
+
+    Community findByNickname(String nickname);
 }

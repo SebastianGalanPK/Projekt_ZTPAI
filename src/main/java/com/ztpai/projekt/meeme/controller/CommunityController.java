@@ -2,11 +2,18 @@ package com.ztpai.projekt.meeme.controller;
 
 import com.ztpai.projekt.meeme.data.Community;
 import com.ztpai.projekt.meeme.data.Meme;
+import com.ztpai.projekt.meeme.data.User;
 import com.ztpai.projekt.meeme.data.dto.CommunityDto;
 import com.ztpai.projekt.meeme.data.dto.SearchDto;
 import com.ztpai.projekt.meeme.repository.CommunityRepository;
 import com.ztpai.projekt.meeme.repository.MemeRepository;
+import com.ztpai.projekt.meeme.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,15 +27,28 @@ public class CommunityController {
     @Autowired
     MemeRepository memeRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping("/community")
     public void createCommunity(@ModelAttribute("CommunityDto") CommunityDto communityDto){
         Community community = new Community(communityDto.getName(), communityDto.getNickname());
         repository.save(community);
     }
 
-    @PostMapping("/communityd/{id}")
-    public void toggleCommunityStatus(@PathVariable("id") int id){
-        System.out.println("TESTTTTT");
+    @PostMapping("/community/{nickname}")
+    @Transactional
+    public void toggleCommunityStatus(@PathVariable("nickname") String nickname){
+        Community community = repository.findByNickname(nickname);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken auth) {
+            if (auth.getPrincipal() instanceof User user) {
+                user.getCommunities().add(community);
+
+                userRepository.save(user);
+            }
+        }
     }
 
     @GetMapping("/community/{nickname}")
