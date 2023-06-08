@@ -25,11 +25,11 @@
         <div class="container">
             <span id="PANM-header">Post a new meme!</span>
             <span class="form-info"> Error message #5151 </span>
-            <form action="addNewMeme" method="POST" ENCTYPE="multipart/form-data">
+            <form action="meme" method="POST" ENCTYPE="multipart/form-data">
                 <label for="PANM-community">Select community:  </label>
                 <select name="id_community" id="PANM-community" style="width:200px;">
                     <option value="0">Home</option>
-                    
+
                     <!-- #1234 Pobieranie listy społecznościu użytkownika -->
                     <!-- <option value="ID Społeczności">Nazwa Społeczności</option> -->
                 </select>
@@ -104,9 +104,9 @@
                 </div></a>
                 <!-- #1234 Jeśli użytkownik jest zalogowany - favourite, jeśli nie, /signIn-->
                 <a href="/favourite"><div class="button">
-                <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
-                <div class="name">Favourite</div>
-            </div></a>
+                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
+                    <div class="name">Favourite</div>
+                </div></a>
             </div>
 
             <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany -->
@@ -181,7 +181,7 @@
             <span id="community-name">Home</span>
         </div>
         <div id="meme-wrapper">
-            
+
         </div>
 
         <!-- #1234 Pobieranie wszystkich memów -->
@@ -245,15 +245,14 @@
             <div class="community-name">Community123</div>
         </div>
 
-        <div class="meme-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-            when an unknown printer took a galley of type and scrambled it to make a type 
+        <div class="meme-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+            when an unknown printer took a galley of type and scrambled it to make a type
             specimen book.
         </div>
 
         <div class="meme-content">
-            <!-- #1234 wczytanie obrazu-->
-            <img src="ss">
+            <img src="">
         </div>
 
         <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany-->
@@ -391,5 +390,25 @@
   });
 });
 </script>
+
+<script type="text/javascript">
+        fetch('/user')
+          .then(response => response.json())
+          .then(data => {
+            if (data.hasOwnProperty('login')) {
+              document.getElementById('signInUpButton').style.display = 'none';
+              document.getElementById('user-info-right').style.display = 'flex';
+
+                var divs = document.getElementsByClassName('user-nick');
+
+                for (var i = 0; i < divs.length; i++) {
+                  divs[i].innerHTML = data.login;
+                }
+            }
+          })
+          .catch(error => {
+            console.error('Wystąpił błąd podczas pobierania danych użytkownika:', error);
+          });
+    </script>
 
 </html>

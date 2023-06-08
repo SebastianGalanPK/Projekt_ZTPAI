@@ -1,23 +1,22 @@
 const memeContainer = document.querySelector('#meme-wrapper');
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Tutaj możesz umieścić kod, który chcesz wykonać po załadowaniu pliku
-  
-    // Wywołaj funkcję
-    loadAllMemes();
+    loadMemes("/meme");
   });
 
-function loadAllMemes() {
+function loadMemes(fetchValue) {
     const data = {search: this.value};
 
-    fetch('/meme')
+    memeContainer.innerHTML="";
+
+    fetch(fetchValue)
     .then(response => response.json())
     .then(data => {
-        loadMemes(data);
+        loadAllMemes(data);
     })
 }
 
-function loadMemes(memes){
+function loadAllMemes(memes){
     memes.forEach(meme => {
         createMeme(meme);
     });

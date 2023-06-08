@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @JoinColumn(name="id_role", referencedColumnName = "id")
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "liked_community",
             joinColumns = @JoinColumn(name = "id_user"),
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     )
     private Set<Community> communities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favourite_meme",
             joinColumns = @JoinColumn(name = "id_user"),
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     )
     private Set<Meme> favouriteMemes;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Meme> ownMemes;
 
     public User(String login, String password, String email){

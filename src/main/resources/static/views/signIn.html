@@ -67,7 +67,8 @@
       })
       .then(function(responseData) {
         // Obsłuż odpowiedź
-        console.log(responseData);
+        var errorSpan = document.getElementById("form-info");
+        errorSpan.textContent = responseData.message;
       })
       .catch(function(error) {
         // Obsłuż błąd

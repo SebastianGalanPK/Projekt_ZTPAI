@@ -4,6 +4,10 @@ const communityContainer = document.querySelector('#search-result-content');
 search.addEventListener("keyup", function (event) {
     event.preventDefault();
 
+    if(this.value.length < 3){
+        return;
+    }
+
     const data = {search: this.value};
 
     fetch("/community/search", {

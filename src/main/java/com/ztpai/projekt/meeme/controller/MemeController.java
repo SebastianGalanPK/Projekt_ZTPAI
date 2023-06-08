@@ -1,10 +1,14 @@
 package com.ztpai.projekt.meeme.controller;
 
 import com.ztpai.projekt.meeme.data.Meme;
+import com.ztpai.projekt.meeme.data.User;
 import com.ztpai.projekt.meeme.data.dto.MemeDto;
 import com.ztpai.projekt.meeme.repository.MemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,19 +33,26 @@ public class MemeController {
 
         String fileName = StringUtils.cleanPath(memeDto.getFile().getOriginalFilename());
 
-        meme.setCommunity(memeDto.getCommunity());
-        meme.setUser(memeDto.getUser());
-        meme.setText(memeDto.getText());
-        meme.setFileName(fileName);
-        meme.setPostDate(new Date());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken auth) {
+            if (auth.getPrincipal() instanceof User user) {
 
-        repository.save(meme);
+                meme.setCommunity(memeDto.getCommunity());
+                meme.setUser(user);
+                meme.setText(memeDto.getText());
+                meme.setFileName(fileName);
+                meme.setPostDate(new Date());
 
-        try{
-            Path filePath = Path.of(uploadFolder, fileName);
-            Files.copy(memeDto.getFile().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        }catch (IOException e){
-            return -1;
+                repository.save(meme);
+
+                try{
+                    Path filePath = Path.of("src/main/resources/static/uploads", memeDto.getFile().getOriginalFilename());
+                    Files.copy(memeDto.getFile().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                }catch (IOException e){
+                    e.printStackTrace();
+                    return -2;
+                }
+            }
         }
 
         return 1;
