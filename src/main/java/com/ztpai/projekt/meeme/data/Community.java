@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,7 +22,7 @@ public class Community {
     private String nickname;
 
     @ManyToMany(mappedBy =  "communities")
-    Set<User> users;
+    Set<User> users = new HashSet<User>();
 
     @OneToMany(mappedBy = "community")
     private Set<Meme> memes;

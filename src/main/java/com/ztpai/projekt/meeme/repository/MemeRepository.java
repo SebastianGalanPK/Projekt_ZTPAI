@@ -13,4 +13,6 @@ public interface MemeRepository extends JpaRepository<Meme, Long> {
 
     @Query("SELECT m FROM Meme m WHERE m.community.nickname = :nickname")
     List<Meme> getMemeByCommunity(@Param("nickname") String nickname);
+
+    List<Meme> findAllByOrderByPostDateDesc();
 }

@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMemes("/meme");
   });
 
+var roleID;
+
 function loadMemes(fetchValue) {
+    checkUserRole();
+
     const data = {search: this.value};
 
     memeContainer.innerHTML="";
@@ -13,6 +17,8 @@ function loadMemes(fetchValue) {
     .then(response => response.json())
     .then(data => {
         loadAllMemes(data);
+
+        loadVariablesAfterFetch();
     })
 }
 
@@ -47,6 +53,25 @@ function createMeme(meme){
     const user_name = user.querySelector('.user-name');
     user_name.innerHTML = meme.user.login;
 
+    const removeButton = clone.querySelector('.remove-button');
+
+    if (roleID !== 0) {
+      removeButton.style.display = 'none';
+    }
+
     memeContainer.appendChild(clone);
     reloadButtons();
+}
+
+function checkUserRole() {
+  const url = '/user';
+
+  fetch(url)
+    .then(response => response.json())
+    .then(user => {
+      roleID = user.role.id;
+    })
+    .catch(error => {
+      roleID = 1;
+    });
 }

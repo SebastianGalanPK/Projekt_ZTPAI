@@ -9,6 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemeDto {
     private String text;
     private User user;
-    private Community community;
+    private long id_community;
     private MultipartFile file;
 }

@@ -1,8 +1,10 @@
 package com.ztpai.projekt.meeme.controller;
 
+import com.ztpai.projekt.meeme.data.Community;
 import com.ztpai.projekt.meeme.data.Meme;
 import com.ztpai.projekt.meeme.data.User;
 import com.ztpai.projekt.meeme.data.dto.MemeDto;
+import com.ztpai.projekt.meeme.repository.CommunityRepository;
 import com.ztpai.projekt.meeme.repository.MemeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,9 @@ public class MemeController {
     @Autowired
     MemeRepository repository;
 
+    @Autowired
+    CommunityRepository communityRepository;
+
     @Value("${upload.folder}")
     private String uploadFolder;
 
@@ -37,7 +42,7 @@ public class MemeController {
         if (authentication instanceof UsernamePasswordAuthenticationToken auth) {
             if (auth.getPrincipal() instanceof User user) {
 
-                meme.setCommunity(memeDto.getCommunity());
+                meme.setCommunity(communityRepository.findById(memeDto.getId_community()).get());
                 meme.setUser(user);
                 meme.setText(memeDto.getText());
                 meme.setFileName(fileName);
@@ -46,7 +51,7 @@ public class MemeController {
                 repository.save(meme);
 
                 try{
-                    Path filePath = Path.of("src/main/resources/static/uploads", memeDto.getFile().getOriginalFilename());
+                    Path filePath = Path.of(uploadFolder, memeDto.getFile().getOriginalFilename());
                     Files.copy(memeDto.getFile().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 }catch (IOException e){
                     e.printStackTrace();
@@ -58,8 +63,25 @@ public class MemeController {
         return 1;
     }
 
+    @DeleteMapping("/meme/{id}")
+    public void deleteMeme(@PathVariable("id") long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof UsernamePasswordAuthenticationToken auth) {
+            if (auth.getPrincipal() instanceof User user) {
+                if(user.getRole().getName().equalsIgnoreCase("Admin")){
+                    repository.delete(repository.getById(id));
+                }
+            }
+        }
+    }
+
     @GetMapping("/meme")
     public List<Meme> getAllMemes(){
         return repository.findAll();
+    }
+
+    @GetMapping("/meme/last")
+    public List<Meme> getMemesSortedByPostDate(){
+        return repository.findAllByOrderByPostDateDesc();
     }
 }

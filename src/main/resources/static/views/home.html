@@ -14,9 +14,9 @@
     <script src="https://kit.fontawesome.com/2282473dfd.js" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="/js/search.js" defer></script>
-    <script type="text/javascript" src="/js/memeManager.js" defer></script>
     <script type="text/javascript" src="/js/communityManager.js" defer></script>
 
+    <script type="text/javascript" src="/js/memeManager.js" defer></script>
     <script type="text/javascript" src="/js/memeLoader.js" defer></script>
 </head>
 <body>
@@ -24,12 +24,9 @@
     <div id="post-a-new-meme-container">
         <div class="container">
             <span id="PANM-header">Post a new meme!</span>
-            <span class="form-info"> Error message #5151 </span>
             <form action="meme" method="POST" ENCTYPE="multipart/form-data">
                 <label for="PANM-community">Select community:  </label>
                 <select name="id_community" id="PANM-community" style="width:200px;">
-                    <option value="0">Home</option>
-
                     <!-- #1234 Pobieranie listy społecznościu użytkownika -->
                     <!-- <option value="ID Społeczności">Nazwa Społeczności</option> -->
                 </select>
@@ -90,43 +87,14 @@
 
 
             <div class="nav-main">
-                <a href="/index.php"><div class="button">
+                <a href="/home"><div class="button">
                     <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
                     <div class="name">Home</div>
                 </div></a>
-                <a href="/top"><div class="button">
-                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
-                    <div class="name">Top</div>
-                </div></a>
-                <a href="/last"><div class="button">
+                <a><div class="button" id="last-button">
                     <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
                     <div class="name">Last</div>
                 </div></a>
-                <!-- #1234 Jeśli użytkownik jest zalogowany - favourite, jeśli nie, /signIn-->
-                <a href="/favourite"><div class="button">
-                    <div class="icon"><i class="fa-solid fa-circle-user"></i></div>
-                    <div class="name">Favourite</div>
-                </div></a>
-            </div>
-
-            <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany -->
-            <div class="nav-user">
-                <div class="header">
-                    Your community
-                </div>
-
-                <div id="community-list">
-                    <!-- #1234 Załaduj wszystkie lubiane społeczności użytkownika-->
-                    <div class="community" id="0">
-                        <div class="cm-button">
-                            <div class="cm-icon"><i class="fa-solid fa-circle-user"></i></div>
-                            <div class="cm-name">Nazwa społeczności</div>
-                        </div>
-                        <div class="cm-star-button" style="color: yellow">
-                            <div class="icon"><i class="fa-solid fa-star"></i></div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- #1234 Jeśli użytkownik jest zalogowany - otwiera panel, jeśli nie - otwiera stronę logowania -->
@@ -224,9 +192,6 @@
             <div class="cm-icon"><i class="fa-solid fa-circle-user"></i></div>
             <div class="cm-name">community-name</div>
         </div>
-        <div class="cm-star-button">
-            <div class="icon"><i class="fa-solid fa-star"></i></div>
-        </div>
     </div>
 </template>
 
@@ -250,19 +215,8 @@
             <img src="">
         </div>
 
-        <!-- #1234 Wyświetlaj, jeśli użytkownik jest zalogowany-->
         <div class="meme-footer">
-            <div class="meme-footer-panel-left">
-                <button class="like-button"> <i class="fa-solid fa-square-caret-up"></i></button>
-                <button class="dislike-button"><i class="fa-solid fa-square-caret-down"></i></i></button>
-
-                <span class="vote-number">
-                    142
-                </span>
-            </div>
-
             <div class="meme-footer-panel-right">
-                <button class="favourite-meme-button"><i class="fa-solid fa-star"></i></button>
                 <button class="remove-button"><i class="fa-solid fa-trash-can"></i></i></button>
             </div>
         </div>
@@ -399,19 +353,67 @@ fetch('/user')
         if (data.hasOwnProperty('login')) {
           document.getElementById('signInUpButton').style.display = 'none';
           document.getElementById('user-info-right').style.display = 'flex';
-
+          document.getElementById('user-info-wrapper').style.display = 'flex';
+          
           var divs = document.getElementsByClassName('user-nick');
 
           for (var i = 0; i < divs.length; i++) {
             divs[i].innerHTML = data.login !== null ? data.login : '';
           }
         }
+        else{
+            document.getElementById('post-a-new-meme-button').style.display = 'none';
+        }
       } else {
-      }
+        document.getElementById('post-a-new-meme-button').style.display = 'none';
+            }
     })
     .catch(error => {
-
+        document.getElementById('post-a-new-meme-button').style.display = 'none';
     });
-    </script>
+</script>
+
+<script type="text/javascript">
+    // Pobieramy referencję do przycisku
+const lastButton = document.getElementById('last-button');
+
+// Definiujemy funkcję, która zostanie wywołana po kliknięciu przycisku
+function handleLastButtonClick() {
+  // Tutaj umieść kod, który ma zostać wykonany po kliknięciu przycisku
+  // Na przykład:
+  console.log('Przycisk "Last" został kliknięty');
+  // Wywołaj inną funkcję lub wykonaj inne operacje
+   loadMemes('/meme/last');
+}
+
+// Przypisujemy funkcję do zdarzenia kliknięcia przycisku
+lastButton.addEventListener('click', handleLastButtonClick);
+</script>
+
+<script type="text/javascript">
+    // Pobranie referencji do elementu select
+const selectCommunityList = document.getElementById('PANM-community');
+
+// Funkcja do dodawania opcji do elementu select
+function addCommunityOption(id, name) {
+  const option = document.createElement('option');
+  option.value = id;
+  option.textContent = name;
+  selectCommunityList.appendChild(option);
+}
+
+// Pobranie listy społeczności za pomocą fetch
+fetch('/community')
+  .then(response => response.json())
+  .then(communities => {
+    // Dodawanie opcji dla każdej społeczności
+    communities.forEach(community => {
+      addCommunityOption(community.id, community.name);
+    });
+  })
+  .catch(error => {
+    console.error('Błąd podczas pobierania listy społeczności:', error);
+  });
+</script>
 
 </html>

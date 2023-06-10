@@ -1,7 +1,14 @@
-const likeButtons = document.querySelectorAll(".like-button");
-const dislikeButtons = document.querySelectorAll(".dislike-button");
-const removeButtons = document.querySelectorAll(".remove-button");
-const favouriteMemeButtons = document.querySelectorAll(".favourite-meme-button");
+function loadVariablesAfterFetch(){
+    const likeButtons = document.querySelectorAll(".like-button");
+    const dislikeButtons = document.querySelectorAll(".dislike-button");
+    const removeButtons = document.querySelectorAll(".remove-button");
+    const favouriteMemeButtons = document.querySelectorAll(".favourite-meme-button");
+
+    likeButtons.forEach(button => button.addEventListener("click", giveLike));
+    dislikeButtons.forEach(button => button.addEventListener("click", giveDislike));
+    removeButtons.forEach(button => button.addEventListener("click", removeMeme));
+    favouriteMemeButtons.forEach(button=>button.addEventListener("click", changeFavouriteMeme));
+}
 
 function giveLike(){
     const likes = this;
@@ -44,12 +51,16 @@ function giveDislike(){
 }
 
 function removeMeme(){
+    console.log("REMOVE");
     const removeButton = this;
 
     const container = removeButton.parentElement.parentElement.parentElement;
     const id = container.getAttribute("id");
 
-    fetch('/remove/'+id).then(function (){
+    fetch('/meme/'+id, {
+        method: 'DELETE'
+        })
+        .then(function (){
         container.setAttribute('style', 'display: none');
     });
 }
@@ -68,8 +79,3 @@ function changeFavouriteMeme(){
         }
     });
 }
-
-likeButtons.forEach(button => button.addEventListener("click", giveLike));
-dislikeButtons.forEach(button => button.addEventListener("click", giveDislike));
-removeButtons.forEach(button => button.addEventListener("click", removeMeme));
-favouriteMemeButtons.forEach(button=>button.addEventListener("click", changeFavouriteMeme));

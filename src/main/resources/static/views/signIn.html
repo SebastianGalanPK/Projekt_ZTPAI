@@ -66,9 +66,15 @@
         return response.json();
       })
       .then(function(responseData) {
-        // Obsłuż odpowiedź
-        var errorSpan = document.getElementById("form-info");
-        errorSpan.textContent = responseData.message;
+        if(responseData.message){
+            // Obsłuż odpowiedź
+            var errorSpan = document.getElementById("form-info");
+            errorSpan.textContent = responseData.message;
+
+            if(responseData.message === 'Succeed'){
+                window.location.href = '/home';
+            }
+        }
       })
       .catch(function(error) {
         // Obsłuż błąd

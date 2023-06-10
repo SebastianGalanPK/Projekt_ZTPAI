@@ -1,6 +1,7 @@
 package com.ztpai.projekt.meeme.data;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "id_user"),
             inverseJoinColumns = @JoinColumn(name = "id_community")
     )
-    private Set<Community> communities;
+    private Set<Community> communities = new HashSet<Community>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

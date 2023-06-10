@@ -7,6 +7,7 @@ import com.ztpai.projekt.meeme.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,9 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final DataVerification verification;
+
+    @Autowired
+    private HttpServletResponse httpServletResponse;
 
 
     public AuthenticationResponse register(RegisterRequest request, @NonNull HttpServletResponse response){
@@ -66,7 +70,7 @@ public class AuthenticationService {
 
         saveCookie(response, jwtToken);
 
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).message("Succeed").build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request, @NonNull HttpServletResponse response) {
@@ -89,7 +93,7 @@ public class AuthenticationService {
 
         saveCookie(response, jwtToken);
 
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder().token(jwtToken).message("Succeed").build();
     }
 
     private void saveCookie(@NonNull HttpServletResponse response, String jwtToken){
