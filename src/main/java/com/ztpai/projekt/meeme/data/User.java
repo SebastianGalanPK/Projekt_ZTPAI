@@ -32,25 +32,6 @@ public class User implements UserDetails {
     @JoinColumn(name="id_role", referencedColumnName = "id")
     private Role role;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "liked_community",
-            joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_community")
-    )
-    private Set<Community> communities = new HashSet<Community>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "favourite_meme",
-            joinColumns = @JoinColumn(name = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_meme")
-    )
-    private Set<Meme> favouriteMemes;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Meme> ownMemes;
-
     public User(String login, String password, String email){
         this.login = login;
         this.password = password;

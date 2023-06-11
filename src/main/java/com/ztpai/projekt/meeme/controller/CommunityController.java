@@ -45,23 +45,6 @@ public class CommunityController {
         return repository.findAll();
     }
 
-    @PostMapping("/community/{nickname}")
-    @Transactional
-    public void toggleCommunityStatus(@PathVariable("nickname") String nickname){
-        Community community = repository.findByNickname(nickname);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof UsernamePasswordAuthenticationToken auth) {
-            if (auth.getPrincipal() instanceof User user) {
-                user.getCommunities().add(community);
-
-                user.setRole(roleRepository.findById(user.getRole().getId()));
-
-                userRepository.save(user);
-            }
-        }
-    }
-
     @GetMapping("/community/{nickname}")
     public List<Meme> getCommunityMemes(@PathVariable("nickname") String nickname){
         return memeRepository.getMemeByCommunity(nickname);

@@ -21,9 +21,6 @@ public class Community {
     private String name;
     private String nickname;
 
-    @ManyToMany(mappedBy =  "communities")
-    Set<User> users = new HashSet<User>();
-
     @OneToMany(mappedBy = "community")
     private Set<Meme> memes;
 

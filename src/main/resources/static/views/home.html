@@ -27,8 +27,6 @@
             <form action="meme" method="POST" ENCTYPE="multipart/form-data">
                 <label for="PANM-community">Select community:  </label>
                 <select name="id_community" id="PANM-community" style="width:200px;">
-                    <!-- #1234 Pobieranie listy społecznościu użytkownika -->
-                    <!-- <option value="ID Społeczności">Nazwa Społeczności</option> -->
                 </select>
 
                 <input name="text" id="PANM-text" type="text" placeholder="Text (optional)">
@@ -71,7 +69,7 @@
 
     <div id="panel-left">
         <div class="panel-left-left">
-            <a href="/index.php"><img src="/img/logo150x29.png"></a>
+            <a href="/"><img src="/img/logo150x29.png"></a>
         </div>
         <div class="panel-left-right">
             <input id="community-search" type="text" placeholder="Search" onclick="toggleSearchResult()">
@@ -126,8 +124,8 @@
                     <div class="user-nick">
                         UserNick123
                     </div>
-                    <form action="logout" method="POST">
-                        <button type="submit" formaction="logout" formmethod="POST">
+                    <form action="/user/logout" method="POST">
+                        <button type="submit" formaction="/user/logout" formmethod="POST" onclick="logout(event)">
                             <div class="user-button">
                                 <i class="fa-solid fa-right-from-bracket"></i>
                             </div>
@@ -159,8 +157,8 @@
             <div class="user-nick">
                 UserNick123
             </div>
-            <form action="logout" method="POST">
-                <button type="submit" formaction="logout" formmethod="POST">
+            <form action="/user/logout" method="POST">
+                <button type="submit" formaction="/user/logout" formmethod="POST" onclick="logout(event)">
                     <div class="user-button">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </div>
@@ -379,10 +377,6 @@ const lastButton = document.getElementById('last-button');
 
 // Definiujemy funkcję, która zostanie wywołana po kliknięciu przycisku
 function handleLastButtonClick() {
-  // Tutaj umieść kod, który ma zostać wykonany po kliknięciu przycisku
-  // Na przykład:
-  console.log('Przycisk "Last" został kliknięty');
-  // Wywołaj inną funkcję lub wykonaj inne operacje
    loadMemes('/meme/last');
 }
 
@@ -416,4 +410,50 @@ fetch('/community')
   });
 </script>
 
+<script type="text/javascript">
+    function logout(event) {
+    event.preventDefault(); // Zatrzymuje domyślną akcję przycisku
+
+    fetch('/user/logout', {
+        method: 'POST'
+    })
+    .then(response => {
+        // Obsługa odpowiedzi z serwera
+        if (response.ok) {
+            window.location.href = '/';
+        } else {
+            console.log('Wystąpił błąd podczas wylogowywania');
+        }
+    })
+    .catch(error => {
+        console.log('Wystąpił błąd podczas wykonywania żądania', error);
+    });
+}
+</script>
+
+<script>
+    document.getElementById('BPost').addEventListener('click', function(event) {
+        event.preventDefault(); // Zapobiegaj domyślnemu działaniu przycisku POST
+
+        // Pobierz dane z formularza
+        var form = document.querySelector('form');
+        var formData = new FormData(form);
+
+        // Wykonaj żądanie HTTP do endpoint za pomocą fetch
+        fetch('/meme', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) {
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                throw new Error('Wystąpił błąd: ' + response.statusText);
+            }
+        })
+        .catch(function(error) {
+            console.log('Wystąpił błąd:', error.message);
+        });
+    });
+</script>
 </html>

@@ -34,9 +34,4 @@ public class Meme {
     @ManyToOne
     @JoinColumn(name="id_community", referencedColumnName = "id")
     private Community community;
-
-    @ManyToMany(mappedBy =  "favouriteMemes")
-    private Set<User> favouriteUsers;
-
-    //private final String UPLOAD_DIRECTORY = "/../public/uploads/";
 }
